@@ -44,13 +44,13 @@ router.setState = function(state, entry, entryNumber) {
     documentBody.setAttribute("class", "settings");
     journalHeader.innerHTML = "Settings";
   } else if(state === "single-entry") {
+    clearEntryResidue();
     documentBody.setAttribute("class", "single-entry");
     journalHeader.innerHTML = "Entry " + entryNumber;
     entryPage.entry = entry;
   } else {
     documentBody.removeAttribute("class");
     journalHeader.innerHTML = "Journal Entries";
-    clearEntryResidue();
   }
 }
 

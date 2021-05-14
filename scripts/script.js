@@ -21,13 +21,14 @@ const entryPage = document.querySelector("entry-page");
 const settingsIcon = document.querySelector("img");
 settingsIcon.addEventListener('click', () => {
   setState("settings");
-  history.pushState("settings", "");
+  history.pushState("settings", "", "#settings");
+  console.log(location.origin);
 });
 
 const journalHeader = document.querySelector("h1");
 journalHeader.addEventListener('click', () => {
   setState();
-  if(history.state !== null) history.pushState(null, "");
+  if(history.state !== null) history.pushState(null, "", location.origin);
 });
 
 const journalMain = document.querySelector("main");
@@ -36,7 +37,7 @@ journalMain.addEventListener('click', (event) => {
   if (entryClicked === journalMain) return;
   let entryNumber = getEntryNumber(entryClicked.entry);
   setState("single-entry", entryClicked.entry, entryNumber);
-  history.pushState(entryClicked.entry, "");
+  history.pushState(entryClicked.entry, "", ("#entry" + entryNumber));
 });
 
 window.onpopstate = event => {
