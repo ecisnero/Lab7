@@ -16,3 +16,53 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 });
+
+const entryPage = document.querySelector("entry-page");  
+const documentBody = document.querySelector("body");
+
+const settingsIcon = document.querySelector("img");
+settingsIcon.addEventListener('click', () => {
+  history.pushState(documentBody , "settings", "#Settings");
+  //edit content
+  documentBody.setAttribute("class", "settings");
+  journalHeader.innerHTML = "Settings";
+  //update state
+  setState();
+  
+});
+
+const journalHeader = document.querySelector("h1");
+journalHeader.addEventListener('click', () => {
+  //edit content
+  documentBody.removeAttribute("class");
+  journalHeader.innerHTML = "Journal Entries";
+  //update state
+  setState();
+});
+
+const journalMain = document.querySelector("main");
+journalMain.addEventListener('click', (event) => {
+  //edit content
+  let entryClicked = event.target;
+  let entryNumber = getEntryNumber(entryClicked);
+  if(entryNumber == 0) return 0;
+  documentBody.setAttribute("class", "single-entry");
+  journalHeader.innerHTML = "Entry " + entryNumber;
+  //update state
+  setState();
+});
+
+function getEntryNumber(entry){
+  if(entry == journalMain){
+    return 0;
+  } else{
+    let JournalMainChildren = journalMain.children;
+    for(let i = 0; i < JournalMainChildren.length; i++) {
+      if(JournalMainChildren[i] === entry){
+        return i + 1;
+      }
+    }
+  }
+
+}
+
