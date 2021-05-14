@@ -5,6 +5,10 @@ export const router = {};
 /**
  * Changes the "page" (state) that your SPA app is currently set to
  */
+
+ const documentBody = document.querySelector("body");
+ const journalHeader = document.querySelector("h1"); 
+ const entryPage = document.querySelector("entry-page");
 router.setState = function(state, entry, entryNumber) {
   /**
    * - There are three states that your SPA app will have
@@ -36,22 +40,27 @@ router.setState = function(state, entry, entryNumber) {
    *    2. You may modify the parameters of setState() as much as you like
    */
 
-  const entryPage = document.querySelector("entry-page");
-  
-  let documentBody = document.querySelector("body");
   if(state === "settings") {
-    //location.replace(location + "#settings");
+    documentBody.setAttribute("class", "settings");
+    journalHeader.innerHTML = "Settings";
   } else if(state === "single-entry") {
-    //console.log('Single Entry');
-    //entryPage.entry = entry;
-    //location.assign(location + "#" + entryNumber);
-
-    
+    documentBody.setAttribute("class", "single-entry");
+    journalHeader.innerHTML = "Entry " + entryNumber;
+    entryPage.entry = entry;
   } else {
-    //console.log("Default");
-    
-    //location.reload();
+    documentBody.removeAttribute("class");
+    journalHeader.innerHTML = "Journal Entries";
+    clearEntryResidue();
   }
-
 }
 
+function clearEntryResidue() {
+  let imageToClean = entryPage.shadowRoot.querySelector("img");
+  if(imageToClean != null) {
+    entryPage.shadowRoot.querySelector("section").removeChild(imageToClean);
+  }
+  let audioToClean = entryPage.shadowRoot.querySelector("audio");
+  if(audioToClean != null) {
+    entryPage.shadowRoot.querySelector(".entry-audio-section").removeChild(audioToClean);
+  }
+}

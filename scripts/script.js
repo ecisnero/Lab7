@@ -17,63 +17,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const entryPage = document.querySelector("entry-page");  
-const documentBody = document.querySelector("body");
-
+const entryPage = document.querySelector("entry-page");
 const settingsIcon = document.querySelector("img");
 settingsIcon.addEventListener('click', () => {
-  //edit content
-  documentBody.setAttribute("class", "settings");
-  journalHeader.innerHTML = "Settings";
-  //update state
-  setState();
-  
+  setState("settings");
+  history.pushState("settings", "");
 });
 
 const journalHeader = document.querySelector("h1");
 journalHeader.addEventListener('click', () => {
-  //edit content
-  documentBody.removeAttribute("class");
-  journalHeader.innerHTML = "Journal Entries";
-  //update state
   setState();
-  clearEntryResidue();
+  if(history.state !== null) history.pushState(null, "");
 });
 
 const journalMain = document.querySelector("main");
 journalMain.addEventListener('click', (event) => {
-  //edit content
   let entryClicked = event.target;
-  let entryNumber = getEntryNumber(entryClicked);
-  if(entryNumber == 0) return 0;
-  documentBody.setAttribute("class", "single-entry");
-  journalHeader.innerHTML = "Entry " + entryNumber;
-  document.querySelector("entry-page").entry = entryClicked.entry
-  //update state
-  setState();
+  if (entryClicked === journalMain) return;
+  let entryNumber = getEntryNumber(entryClicked.entry);
+  setState("single-entry", entryClicked.entry, entryNumber);
+  history.pushState(entryClicked.entry, "");
 });
 
-function getEntryNumber(entry){
-  if(entry == journalMain){
-    return 0;
-  } else{
-    let JournalMainChildren = journalMain.children;
-    for(let i = 0; i < JournalMainChildren.length; i++) {
-      if(JournalMainChildren[i] === entry){
-        return i + 1;
-      }
-    }
+window.onpopstate = event => {
+  if (event.state === "settings") {
+    setState("settings");
   }
-
+  else if (event.state === null) {
+    setState();
+  }
+  else {
+    setState("single-entry", event.state, getEntryNumber(event.state));
+  }
 }
 
-function clearEntryResidue() {
-  let imageToClean = entryPage.shadowRoot.querySelector("img");
-  if(imageToClean != null) {
-    entryPage.shadowRoot.querySelector("section").removeChild(imageToClean);
-  }
-  let audioToClean = entryPage.shadowRoot.querySelector("audio");
-  if(audioToClean != null) {
-    entryPage.shadowRoot.querySelector(".entry-audio-section").removeChild(audioToClean);
+function getEntryNumber(entry) {
+  for (let i = 0; i < journalMain.children.length; i++) {
+    if (journalMain.children[i].entry.title == entry.title
+      && journalMain.children[i].entry.date == entry.date) {
+      return i + 1;
+    }
   }
 }
