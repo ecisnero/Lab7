@@ -22,7 +22,6 @@ const documentBody = document.querySelector("body");
 
 const settingsIcon = document.querySelector("img");
 settingsIcon.addEventListener('click', () => {
-  history.pushState(documentBody , "settings", "#Settings");
   //edit content
   documentBody.setAttribute("class", "settings");
   journalHeader.innerHTML = "Settings";
@@ -38,6 +37,7 @@ journalHeader.addEventListener('click', () => {
   journalHeader.innerHTML = "Journal Entries";
   //update state
   setState();
+  clearEntryResidue();
 });
 
 const journalMain = document.querySelector("main");
@@ -48,6 +48,7 @@ journalMain.addEventListener('click', (event) => {
   if(entryNumber == 0) return 0;
   documentBody.setAttribute("class", "single-entry");
   journalHeader.innerHTML = "Entry " + entryNumber;
+  document.querySelector("entry-page").entry = entryClicked.entry
   //update state
   setState();
 });
@@ -66,3 +67,13 @@ function getEntryNumber(entry){
 
 }
 
+function clearEntryResidue() {
+  let imageToClean = entryPage.shadowRoot.querySelector("img");
+  if(imageToClean != null) {
+    entryPage.shadowRoot.querySelector("section").removeChild(imageToClean);
+  }
+  let audioToClean = entryPage.shadowRoot.querySelector("audio");
+  if(audioToClean != null) {
+    entryPage.shadowRoot.querySelector(".entry-audio-section").removeChild(audioToClean);
+  }
+}
