@@ -7,11 +7,7 @@
 
 //Installation
 var CACHE_NAME = 'lab7-cache';
-var urlsToCache = [ 
-  "./index.html", 
-  "./style.css", 
-  "./scripts", 
-  "https://cse110lab6.herokuapp.com/entries"];
+var urlToCache = "https://cse110lab6.herokuapp.com/entries";
 
 self.addEventListener('install', function(event) {
   // Perform install steps
@@ -19,7 +15,7 @@ self.addEventListener('install', function(event) {
     caches.open(CACHE_NAME)
       .then(function(cache) {
         console.log('Opened cache');
-        return cache.addAll(urlsToCache);
+        return cache.add(urlToCache);
       })
   );
 });
