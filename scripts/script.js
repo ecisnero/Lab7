@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const entryPage = document.querySelector("entry-page");
 const settingsIcon = document.querySelector("img");
 settingsIcon.addEventListener('click', () => {
+  if(history.state === "settings") return;
   setState("settings");
   history.pushState("settings", "", "#settings");
   console.log(location.origin);
@@ -27,8 +28,9 @@ settingsIcon.addEventListener('click', () => {
 
 const journalHeader = document.querySelector("h1");
 journalHeader.addEventListener('click', () => {
+  if(history.state === null) return;
   setState();
-  if(history.state !== null) history.pushState(null, "", location.origin);
+  history.pushState(null, "", location.origin);
 });
 
 const journalMain = document.querySelector("main");
