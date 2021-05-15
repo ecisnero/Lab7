@@ -39,7 +39,7 @@ const journalHeader = document.querySelector("h1");
 journalHeader.addEventListener('click', () => {
   if(history.state === null) return;
   setState();
-  history.pushState(null, "", location.origin);
+  history.pushState(null, "", location.pathname);
 });
 
 const journalMain = document.querySelector("main");
